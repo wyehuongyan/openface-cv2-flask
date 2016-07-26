@@ -1,0 +1,49 @@
+version: '2'
+
+services:
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        environment:
+            PMA_HOST: mariadb
+            PMA_PORT: 3306
+            PMA_USER: openfaceadmin
+            PMA_PASSWORD: password
+        ports:
+            - 8282:80
+        networks:
+            - openface_network
+        depends_on:
+            - mariadb
+
+    openface:
+        build: .
+        image: gitlab.aporigin.com:5005/cloudvision/openface:1.0
+        environment:
+            - 'affinity:container!=~mariadb*' # schedules this container to a node without a container that satisfies mariadb
+        ports:
+            - 5000:5000
+        networks:
+            - openface_network
+        volumes:
+            - .:/usr/src/openface # only for development, please remove in production 
+        restart: always
+        depends_on:
+            - mariadb
+        command: ['python', './flask/run.py'] # python run app
+
+    mariadb:
+        image: mariadb:10.0.25
+        environment:
+            MYSQL_USER: openfaceadmin
+            MYSQL_PASSWORD: password
+            MYSQL_DATABASE: openfacedb
+            MYSQL_ROOT_PASSWORD: password
+        ports: 
+            - 3306
+        networks:
+            - openface_network
+        volumes:
+            - ~/.docker-volumes/openface/mariadb/data:/var/lib/mysql
+
+networks:
+    openface_network:
