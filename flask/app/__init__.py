@@ -8,4 +8,4 @@ app.secret_key = 'some_secret'
 
 #Create an instance of SQLAclhemy
 #db = SQLAlchemy(app)
-from app import views, models
+from app import views

@@ -26,6 +26,7 @@ services:
             - openface_network
         volumes:
             - .:/usr/src/openface # only for development, please remove in production 
+        privileged: true
         restart: always
         depends_on:
             - mariadb
