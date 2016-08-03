@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>Face Recognition</title>
+ 
+ 
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css" media="all">
+</head>
+ 
+<body>
+ 
+    <div class="container">
+        <div class="header">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation"><a href="/">Train</a>
+                    </li>
+                    <li role="presentation" class="active"><a href="{{ url_for('face_infer') }}">Detect</a>
+                    </li>
+                    <li role="presentation"><a href="{{ url_for('user_create') }}">Create User</a>
+                    </li>
+                </ul>
+            </nav>
+            <h3 class="text-muted">Face Recognition</h3>
+        </div>
+
+		<div class="jumbotron" hidden>
+			<p>
+				<img class="live-image-feed" src="{{ url_for('video_feed_infer') }}">
+			</p>
+		</div>
+    </div>
+	
+</body>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='scripts/face-infer.js') }}"></script>
+</html>

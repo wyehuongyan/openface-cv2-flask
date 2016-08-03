@@ -30,7 +30,7 @@ services:
         restart: always
         depends_on:
             - mariadb
-        command: ['python', './flask/run.py'] # python run app
+        command: ['python', './facer/demo.py', '-d=1', '-c=haarcascade_frontalface_default.xml'] # python run app
 
     mariadb:
         image: mariadb:10.0.25

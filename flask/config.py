@@ -1,1 +1,1 @@
-SQLALCHEMY_DATABASE_URI = 'mysql://root:password@localhost/'
+SQLALCHEMY_DATABASE_URI = 'mysql://root:password@localhost/openfacedb'

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <title>Facial Recognition Example</title>
+        </head>
+
+        <body>
+            <h1>Take a snapshot of the current video stream</h1>
+            Click on the Start WebCam button.
+            <p>
+                <button id="start-btn">Start WebCam</button>
+                <button id="stop-btn">Stop WebCam</button> 
+                <button id="snapshot-btn">Take Snapshot</button> 
+            </p>
+            <video onclick="snapshot(this);" width=400 height=400 id="video" controls autoplay></video>
+            <p>
+                Screenshots : 
+            </p>
+            <canvas id="myCanvas" width="400" height="350"></canvas>
+            <h4>Live Video</h4>
+            <img id="myImage" width="640" height="480">
+        </body>
+
+        <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+</html>

@@ -2,14 +2,11 @@
 <html lang="en">
  
 <head>
-    <title>Python Flask Bucket List App</title>
- 
+    <title>Face Recognition</title>
  
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
- 
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
- 
- 
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css" media="all">
 </head>
  
 <body>
@@ -18,54 +15,52 @@
         <div class="header">
             <nav>
                 <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="#">Home</a>
+                    <li role="presentation" class="active"><a href="/">Train</a>
                     </li>
-                    <li role="presentation"><a href="#">Sign In</a>
+                    <li role="presentation"><a href="{{ url_for('face_infer') }}">Detect</a>
                     </li>
-                    <li role="presentation"><a href="showSignUp">Sign Up</a>
+                    <li role="presentation"><a href="{{ url_for('user_create') }}">Create User</a>
                     </li>
                 </ul>
             </nav>
-            <h3 class="text-muted">Python Flask App</h3>
+            <h3 class="text-muted">Face Recognition</h3>
         </div>
  
-        <div class="jumbotron">
-            <h1>Video Streaming Demo</h1>
-            <p class="lead"></p>
+        <div class="row">
+            <div class="col-lg-2">
+            </div>
+ 
+            <div class="col-lg-8">
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control typeahead" id="inputAutocomplete" placeholder="Search for a user...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" id="btnTraining">Start Training</button>
+                    </span>
+                </div><!-- /input-group -->
+                <div class="small-text">
+                    <small>Can't find who you're looking for? Create a new user <a href="{{ url_for('user_create') }}">here</a></small>
+                </div>
+            </div>
+
+            <div class="col-lg-2">
+            </div>
+        </div>
+
+        <div class="jumbotron" hidden>
             <p>
-                <img src="{{ url_for('video_feed') }}">
+                <img class="live-image-feed">
             </p>
         </div>
  
-        <div class="row marketing">
-            <div class="col-lg-6">
-                <h4>Bucket List</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-            </div>
- 
-            <div class="col-lg-6">
-                <h4>Bucket List</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-            </div>
-        </div>
- 
         <footer class="footer">
-            <p>&copy; Company 2015</p>
+            <p>&copy; Source AP</p>
         </footer>
  
     </div>
 </body>
- 
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='bootstrap3-typeahead.min.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/face-train.js') }}"></script>
 </html>
