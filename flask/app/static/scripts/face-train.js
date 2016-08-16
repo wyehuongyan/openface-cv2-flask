@@ -56,7 +56,7 @@ $(document).ready(function() {
 
 		if(isTraining) {
 			// set dynamic variable 
-			src = "/video/feed/train?username=" + activeUser.username;
+			src = "/video/feed/train?id=" + activeUser.id;
 			$('.live-image-feed').attr("src", src);
 			$('#btnTraining').removeClass('btn-primary').addClass('btn-default');
 			$('#inputAutocomplete').prop('disabled', true);
@@ -69,7 +69,8 @@ $(document).ready(function() {
 			}, 2000);
 		} else {
 			$('#inputAutocomplete').prop('disabled', false);
-			activeUser = {}
+			$('#inputAutocomplete').val('');
+			activeUser = {};
 			$('#btnTraining').removeClass('btn-danger').addClass('btn-primary');
 			$('#btnTraining').text('Start Training');
 

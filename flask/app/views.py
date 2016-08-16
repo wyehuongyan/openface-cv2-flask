@@ -18,25 +18,25 @@ def main():
 
 	return render_template('index.html')
 
-def gen_livestream(camera, hasMultiple=None, username=None):
+def gen_livestream(camera, hasMultiple=None, id=None):
 	# Video streaming generator function.
 	while True:
-		frame = camera.get_frame(hasMultiple, username)
+		frame = camera.get_frame(hasMultiple, id)
 		
 		if cv2.waitKey(1) & 0xFF == ord('q'):
 			break
 
 		yield (b'--frame\r\n'
-				b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')	
+				b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 @app.route('/video/feed/train')
 def video_feed_train():
-	# get arguments
-	username = request.args.get('username')
+	# get arguments (id is a string, cast to int)
+	id = int(request.args.get('id'))
 
 	# Video streaming route. Put this in the src attribute of an img tag
 	return Response(
-		gen_livestream(VideoCamera(), None, username),
+		gen_livestream(VideoCamera(), None, id),
 		mimetype='multipart/x-mixed-replace; boundary=frame'
 	)
 
@@ -90,9 +90,12 @@ def user():
 ################
 ##### Face #####
 ################
-@app.route('/face/train', methods=['GET'])
+@app.route('/face/train', methods=['POST'])
 def face_train():
-	return render_template('face/train.html')
+	if request.method == "POST":
+		data = request.json
+	
+	return jsonify(msg="orh, lai liao lo")
 
 @app.route('/face/infer', methods=['GET'])
 def face_infer():
