@@ -2,6 +2,8 @@ $(document).ready(function() {
 	let users = [];
 	let activeUser = {};
 	let isTraining = false;
+	var countdownTimeout = 0;
+	var countdownInterval = 0;
 
 	// autocomplete
 	$('#inputAutocomplete').typeahead({
@@ -45,6 +47,7 @@ $(document).ready(function() {
 
 	$('#btnTraining').click(function() {
 		if($('#inputAutocomplete').val().length > 0 && !jQuery.isEmptyObject(activeUser)) {
+			// train for 10 seconds
 			toggleTraining();
 		} else {
 			console.log("Please select a user first.");
@@ -66,11 +69,29 @@ $(document).ready(function() {
 				$('.jumbotron').slideDown(400);
 				$('#btnTraining').removeClass('btn-default').addClass('btn-danger');
 				$('#btnTraining').text('Stop Recording');
-			}, 2000);
+			}, 1000 * 2);
+
+			// countdown timer
+			let counter = 10;
+
+			countdownInterval = setInterval(function() { 
+				$('.live-image-timer').html("Training stops in: <span class=\"label label-danger\">" + counter + "</span> seconds");
+				counter = counter - 1; 
+			}, 1000 * 1);
+			
+			countdownTimeout = setTimeout(function() {
+				console.log("auto toggleTraining()");
+				toggleTraining();
+			}, 1000 * 11)
+
 		} else {
 			$('#inputAutocomplete').prop('disabled', false);
 			$('#inputAutocomplete').val('');
 			activeUser = {};
+
+			clearTimeout(countdownTimeout);
+			clearTimeout(countdownInterval);
+
 			$('#btnTraining').removeClass('btn-danger').addClass('btn-primary');
 			$('#btnTraining').text('Start Training');
 
