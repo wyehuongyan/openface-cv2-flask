@@ -70,6 +70,7 @@ class Trainer(object):
 
 			self.totalImages[phash] = Face(repArray, identity)
 
+		# len(self.totalImage) might be < len(faceImages) due to overlapping phash
 		print "[INFO] total face images: {}".format(len(faceImages))
 		print "[INFO] total images: {}".format(len(self.totalImages))
 
@@ -84,17 +85,13 @@ class Trainer(object):
 			d = self.getData()
 			
 			if d is None:
-				print "d is None"
 				self.svm = None
 				return
 			else:
-				print "d is not None"
 				(X, y) = d
 
-				print y
-
 				numIdentities = len(set(y + [-1]))
-				print set(y + [-1]) # adds -1 to every element, i.e. 2 + (-1) = 1
+				#print set(y + [-1]) # adds -1 to every element, i.e. 2 + (-1) = 1
 
 				if numIdentities <= 1:
 					return
@@ -116,12 +113,12 @@ class Trainer(object):
 		if self.svm is None:
 			self.trainSVM(None)
 
-		print 'Muahaha prediction!'
+		#print 'Muahaha prediction!'
 		rep = rep.reshape(1, -1)
 		identity = self.svm.predict(rep)[0]
 
 		user = db.session.query(User).get(identity)
 
-		print user.username
+		#print user.username
 
 		return user

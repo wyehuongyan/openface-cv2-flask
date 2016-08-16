@@ -57,7 +57,7 @@ def user_create():
 		user = User(request.form['username'], request.form['firstname'], request.form['lastname'])
 		db.session.add(user)
 		db.session.commit()
-		print user.username
+		#print user.username
 
 		# create folder in ./training/:username/
 		directory = './app/training/' + user.username

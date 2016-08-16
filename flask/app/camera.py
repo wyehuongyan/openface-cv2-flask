@@ -103,14 +103,12 @@ class VideoCamera(object):
                 # unique hash from alignedFace image
                 phash = str(imagehash.phash(Image.fromarray(alignedFace)))
 
-                print phash
-
                 if phash in self.images:
                     identity = self.images[phash].identity
-                    print 'Found existing phash'
-                    print self.images[phash]
+                    #print 'Found existing phash'
+                    #print self.images[phash]
 
-                    if identity is not None && self.id is None: # only draw text when training mode is off
+                    if identity is not None and self.id is None: # only draw text when training mode is off
                         # find user 
                         user = db.session.query(User).get(identity)
 
@@ -120,7 +118,7 @@ class VideoCamera(object):
                         cv2.putText(self.frame, user.username, (bb.left(), bb.top() - 10), font, 0.6, (255, 255, 255), 1, line_type)
                     
                 else:
-                    print 'new phash ' + str(len(self.images)) 
+                    #print 'new phash ' + str(len(self.images)) 
                     rep = net.forward(alignedFace)
                     #print rep
 
@@ -182,4 +180,4 @@ class VideoCamera(object):
         if self.id: # only update db and train svm if training mode is on
             VideoCamera.trainer.trainSVM(self.images)
         else:
-            print '[INFO] this is a inference session and SVM was not trained.'
+            print '[INFO] this is an inference session hence SVM was not trained.'
