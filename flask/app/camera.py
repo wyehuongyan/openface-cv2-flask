@@ -94,10 +94,13 @@ class VideoCamera(object):
                     # break out of this bb for-loop
                     continue
 
-                # unique hash from alignedFace image
-                phash = str(imagehash.phash(Image.fromarray(alignedFace)))
+                phash = None
 
-                if phash in self.images:
+                if self.id is not None: # training mode
+                    # unique hash from alignedFace image
+                    phash = str(imagehash.phash(Image.fromarray(alignedFace)))
+
+                if phash is not None and phash in self.images:
                     identity = self.images[phash].identity
                     #print 'Found existing phash'
                     #print self.images[phash]

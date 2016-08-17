@@ -72,8 +72,8 @@ class Trainer(object):
 			self.totalImages[phash] = Face(repArray, identity)
 
 		# len(self.totalImage) might be < len(faceImages) due to overlapping phash
-		print "[INFO] total face images: {}".format(len(faceImages))
-		print "[INFO] total images: {}".format(len(self.totalImages))
+		print "[INFO] total face images (db rows): {}".format(len(faceImages))
+		print "[INFO] total labeled images: {}".format(len(self.totalImages))
 
 		return self.totalImages
 
