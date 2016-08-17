@@ -10,7 +10,6 @@ import os
 import openface
 import imagehash
 from app import db
-from trainer import Trainer
 from app.models import Face, User
 
 # directories
@@ -27,10 +26,7 @@ class VideoCamera(object):
     """An emulated camera implementation that streams a repeated sequence of
     files 1.jpg, 2.jpg and 3.jpg at a rate of one frame per second."""
 
-    # static class variables
-    trainer = Trainer()
-
-    def __init__(self):
+    def __init__(self, trainer):
         #self.cam = WebcamVideoStream(src=0).start() # 0 = lifecam, 1 = iSight
         self.fps = FPS().start()
         self.cam = cv2.VideoCapture(0) 	
@@ -38,14 +34,12 @@ class VideoCamera(object):
         self.cam.set(cv2.cv.CV_CAP_PROP_FPS, 60);
         self.frame = None
         self.bb = None
-        self.cam.set(3, 320)
-        self.cam.set(4, 240)
-        #self.faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-        #time.sleep(1)
+        self.cam.set(3, 480) # 480p resolution
+        self.cam.set(4, 360)
         self.id = None
-        self.images = VideoCamera.trainer.retrieveFaceImage(None) # images dictionary
+        self.trainer = trainer
+        self.images = self.trainer.retrieveFaceImage(None) # images dictionary
 
-        print self.images
         print "VideoCamera instantiated"
 
     ##########################
@@ -107,15 +101,6 @@ class VideoCamera(object):
                     identity = self.images[phash].identity
                     #print 'Found existing phash'
                     #print self.images[phash]
-
-                    if identity is not None and self.id is None: # only draw text when training mode is off
-                        # find user 
-                        user = db.session.query(User).get(identity)
-
-                        # draw text
-                        font = cv2.FONT_HERSHEY_SIMPLEX
-                        line_type = cv2.CV_AA
-                        cv2.putText(self.frame, user.username, (bb.left(), bb.top() - 10), font, 0.6, (255, 255, 255), 1, line_type)
                     
                 else:
                     #print 'new phash ' + str(len(self.images)) 
@@ -126,8 +111,8 @@ class VideoCamera(object):
                     #### Recognition ####
                     #####################
                     if self.id is None: 
-                        if VideoCamera.trainer is not None:
-                            user = VideoCamera.trainer.predictFace(rep)
+                        if self.trainer is not None:
+                            user = self.trainer.predictFace(rep)
 
                             # draw text
                             font = cv2.FONT_HERSHEY_SIMPLEX
@@ -178,6 +163,6 @@ class VideoCamera(object):
         print "[INFO] total images for this session: {}".format(len(self.images))
 
         if self.id: # only update db and train svm if training mode is on
-            VideoCamera.trainer.trainSVM(self.images)
+            self.trainer.trainSVM(self.images)
         else:
             print '[INFO] this is an inference session hence SVM was not trained.'

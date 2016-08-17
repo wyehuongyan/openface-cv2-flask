@@ -1,12 +1,16 @@
 from flask import render_template, request, flash, jsonify, Response
 from app import app, socketio, db
 from app.models import User
+from trainer import Trainer
 from camera import VideoCamera
 from flask_socketio import emit
 import urllib
 import base64
 import cv2
 import os
+
+# static class variables
+trainer = Trainer()
 
 #################
 ##### Video #####
@@ -36,14 +40,14 @@ def video_feed_train():
 
 	# Video streaming route. Put this in the src attribute of an img tag
 	return Response(
-		gen_livestream(VideoCamera(), None, id),
+		gen_livestream(VideoCamera(trainer), None, id),
 		mimetype='multipart/x-mixed-replace; boundary=frame'
 	)
 
 @app.route('/video/feed/infer')
 def video_feed_infer():
 	return Response(
-		gen_livestream(VideoCamera(), True),
+		gen_livestream(VideoCamera(trainer), True),
 		mimetype='multipart/x-mixed-replace; boundary=frame'
 	)
 

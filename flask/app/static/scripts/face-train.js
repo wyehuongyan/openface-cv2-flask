@@ -72,17 +72,16 @@ $(document).ready(function() {
 			}, 1000 * 2);
 
 			// countdown timer
-			let counter = 10;
+			let counter = 30;
+
+			countdownTimeout = setTimeout(function() {
+				toggleTraining();
+			}, 1000 * counter)
 
 			countdownInterval = setInterval(function() { 
-				$('.live-image-timer').html("Training stops in: <span class=\"label label-danger\">" + counter + "</span> seconds");
+				$('.live-image-caption').html("Training ends in: <span class=\"label label-danger\">" + counter + "</span> seconds");
 				counter = counter - 1; 
 			}, 1000 * 1);
-			
-			countdownTimeout = setTimeout(function() {
-				console.log("auto toggleTraining()");
-				toggleTraining();
-			}, 1000 * 11)
 
 		} else {
 			$('#inputAutocomplete').prop('disabled', false);

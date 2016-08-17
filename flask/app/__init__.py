@@ -9,9 +9,12 @@ app = Flask(__name__)
 app.config.from_object('config')
 app.secret_key = 'Dkqj4v$eLR9ov]'
 app.queue = Queue()
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 #Create an instance of SQLAclhemy
 db = SQLAlchemy(app)
+
+SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 socketio = SocketIO(app)
 

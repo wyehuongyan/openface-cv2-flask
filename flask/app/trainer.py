@@ -9,10 +9,11 @@ from app.models import Face, FaceImage, User
 import json
 
 class Trainer(object):
+
 	def __init__(self):
 		self.totalImages = {}
 		self.svm = None
-		print "Trainer instantiated"
+		self.trainSVM(None)
 
 	##################
 	#### Training ####
@@ -85,6 +86,7 @@ class Trainer(object):
 			d = self.getData()
 			
 			if d is None:
+				print 'd is None'
 				self.svm = None
 				return
 			else:
@@ -94,6 +96,7 @@ class Trainer(object):
 				#print set(y + [-1]) # adds -1 to every element, i.e. 2 + (-1) = 1
 
 				if numIdentities <= 1:
+					print 'numIdentities <= 1'
 					return
 
 				param_grid = [{
@@ -106,11 +109,12 @@ class Trainer(object):
 				}]
 
 				self.svm = GridSearchCV(SVC(C=1), param_grid, cv=5).fit(X, y)
-				print "SVM trained and fitted successfully."
+				print "+ SVM trained and fitted successfully."
 
 	def predictFace(self, rep):
 
 		if self.svm is None:
+			print self.svm
 			self.trainSVM(None)
 
 		#print 'Muahaha prediction!'
