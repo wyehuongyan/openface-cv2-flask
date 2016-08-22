@@ -34,8 +34,8 @@ class VideoCamera(object):
         self.cam.set(cv2.cv.CV_CAP_PROP_FPS, 60);
         self.frame = None
         self.bb = None
-        self.cam.set(3, 480) # 480p resolution
-        self.cam.set(4, 360)
+        self.cam.set(3, 320) # 480p resolution: 480x360
+        self.cam.set(4, 240)
         self.id = None
         self.trainer = trainer
         self.images = self.trainer.retrieveFaceImage(None) # images dictionary
@@ -115,12 +115,19 @@ class VideoCamera(object):
                     #####################
                     if self.id is None: 
                         if self.trainer is not None:
-                            user = self.trainer.predictFace(rep)
+                            prediction = self.trainer.predictFace(rep)
+
+                            user = prediction["user"]
+                            confidence = prediction["confidence"] * 100
 
                             # draw text
                             font = cv2.FONT_HERSHEY_SIMPLEX
                             line_type = cv2.CV_AA
-                            cv2.putText(self.frame, user.username, (bb.left(), bb.top() - 10), font, 0.6, (255, 255, 255), 1, line_type)
+
+                            if user is not None:
+                                cv2.putText(self.frame, "{} {:.1f}%".format(user.username, confidence), (bb.left(), bb.top() - 10), font, 0.6, (255, 255, 255), 1, line_type)
+                            else:
+                                cv2.putText(self.frame, "Unknown", (bb.left(), bb.top() - 10), font, 0.6, (0, 255, 0), 1, line_type)
 
                         else:
                             print '[Error] class variable trainer is None.'

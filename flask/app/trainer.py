@@ -1,5 +1,5 @@
 import numpy as np
-
+import time
 from sklearn.decomposition import PCA
 from sklearn.grid_search import GridSearchCV
 from sklearn.manifold import TSNE
@@ -78,6 +78,7 @@ class Trainer(object):
 		return self.totalImages
 
 	def trainSVM(self, images):
+		start = time.time()
 		self.retrieveFaceImage(images)
 
 		if len(self.totalImages) > 0:
@@ -108,8 +109,8 @@ class Trainer(object):
 					'kernel': ['rbf']
 				}]
 
-				self.svm = GridSearchCV(SVC(C=1), param_grid, cv=5).fit(X, y)
-				print "+ SVM trained and fitted successfully."
+				self.svm = GridSearchCV(SVC(C=1, probability=True), param_grid, cv=5).fit(X, y)
+				print "+ SVM trained and fitted successfully in {:.2f} seconds.".format(time.time() - start)
 
 	def predictFace(self, rep):
 
@@ -119,10 +120,20 @@ class Trainer(object):
 
 		#print 'Muahaha prediction!'
 		rep = rep.reshape(1, -1)
-		identity = self.svm.predict(rep)[0]
 
-		user = db.session.query(User).get(identity)
+		prediction_proba = self.svm.predict_proba(rep).ravel()
+		maxI = np.argmax(prediction_proba)
+		confidence = prediction_proba[maxI]
 
-		#print user.username
+		prediction = self.svm.predict(rep)
+		identity = prediction[0]
 
-		return user
+		user = None
+
+		#print confidence
+
+		if confidence >= 0.75:
+			user = db.session.query(User).get(identity)
+			#print "Predicted {} with {:.2f} confidence.".format(user.username, confidence)
+
+		return { 'user': user, 'confidence': confidence }
