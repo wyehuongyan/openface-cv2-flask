@@ -16,7 +16,6 @@ services:
             - mariadb
 
     openface:
-        build: .
         image: gitlab.aporigin.com:5005/3danalec/openface:0.1.0
         environment:
             - 'affinity:container!=~mariadb*' # schedules this container to a node without a container that satisfies mariadb
@@ -24,8 +23,6 @@ services:
             - 5000:5000
         networks:
             - openface_network
-        volumes:
-            - .:/usr/src/openface # only for development, please remove in production 
         privileged: true
         restart: always
         depends_on:
