@@ -34,8 +34,6 @@ class VideoCamera(object):
         #self.cam = WebcamVideoStream(src=0).start() # 0 = lifecam, 1 = iSight
         self.fps = FPS().start()
         self.cam = cv2.VideoCapture(0) 	
-        self.cam.set(cv2.cv.CV_CAP_PROP_CONVERT_RGB, False);
-        self.cam.set(cv2.cv.CV_CAP_PROP_FPS, 60);
         self.frame = None
         self.bb = None
         self.cam.set(3, 480) # 480p resolution: 480x360
@@ -162,7 +160,7 @@ class VideoCamera(object):
         ret3, jpeg = cv2.imencode('.jpg', self.frame)
         self.fps.update()
 
-        return jpeg.tobytes()
+        return jpeg.tostring()
 
     ##################
     #### Clean Up ####

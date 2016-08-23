@@ -1,4 +1,4 @@
-FROM bamos/ubuntu-opencv-dlib-torch:ubuntu_14.04-opencv_2.4.11-dlib_18.16-torch_2016.05.07
+FROM gitlab.aporigin.com:5005/3danalec/opencv-dlib-torch:0.1.0
 MAINTAINER Wye Huong Yan <wyehuong@aporigin.com>
 
 ENV INSTALL_PATH /usr/src/openface

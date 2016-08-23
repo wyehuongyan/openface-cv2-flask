@@ -32,6 +32,9 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     liblapack-dev \
     libswscale-dev \
+    v4l2ucp \
+    v4l-utils \
+    libv4l-dev \
     pkg-config \
     python-dev \
     python-numpy \
@@ -63,6 +66,10 @@ RUN cd ~ && \
     cmake -D CMAKE_BUILD_TYPE=RELEASE \
           -D CMAKE_INSTALL_PREFIX=/usr/local \
           -D BUILD_PYTHON_SUPPORT=ON \
+          -D WITH_V4L=ON \
+          -D WITH_QT=ON \
+          -D WITH_GTK=ON \
+          -D WITH_OPENGL_=ON \
           .. && \
     make -j8 && \
     make install && \
