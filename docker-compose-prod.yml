@@ -24,10 +24,10 @@ services:
         networks:
             - openface_network
         privileged: true
-        restart: always
         depends_on:
             - mariadb
-        command: ['gunicorn', '--chdir', './flask', 'run:app', '--timeout', '31104000', '-k', 'gevent', '-w', '3', '-b', '0.0.0.0:5000'] # gunicorn run app with 3 workers and timeout of 12 months
+        # migrate DB then execute gunicorn run app with 3 workers and timeout of 12 months
+        command: bash -l -c "cd flask && python db.py db init && python db.py db migrate && python db.py db upgrade && gunicorn run:app --timeout 31104000 -k gevent -w 3 -b 0.0.0.0:5000" 
 
     mariadb:
         image: mariadb:10.0.25

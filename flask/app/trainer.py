@@ -78,40 +78,43 @@ class Trainer(object):
 		return self.totalImages
 
 	def trainSVM(self, images):
-		start = time.time()
-		self.retrieveFaceImage(images)
+		try:
+			start = time.time()
+			self.retrieveFaceImage(images)
 
-		if len(self.totalImages) > 0:
-			print "+ Training SVM on {} labeled images.".format(len(self.totalImages))
+			if len(self.totalImages) > 0:
+				print "+ Training SVM on {} labeled images.".format(len(self.totalImages))
 
-			d = self.getData()
-			
-			if d is None:
-				print 'd is None'
-				self.svm = None
-				return
-			else:
-				(X, y) = d
-
-				numIdentities = len(set(y + [-1]))
-				#print set(y + [-1]) # adds -1 to every element, i.e. 2 + (-1) = 1
-
-				if numIdentities <= 1:
-					print 'numIdentities <= 1'
+				d = self.getData()
+				
+				if d is None:
+					print 'd is None'
+					self.svm = None
 					return
+				else:
+					(X, y) = d
 
-				param_grid = [{
-					'C': [1, 10, 100, 1000],
-					'kernel': ['linear']
-				}, {
-					'C': [1, 10, 100, 1000],
-					'gamma': [0.001, 0.0001],
-					'kernel': ['rbf']
-				}]
+					numIdentities = len(set(y + [-1]))
+					#print set(y + [-1]) # adds -1 to every element, i.e. 2 + (-1) = 1
 
-				self.svm = GridSearchCV(SVC(C=1, probability=True), param_grid, cv=5).fit(X, y)
-				print "+ SVM trained and fitted successfully in {:.2f} seconds.".format(time.time() - start)
+					if numIdentities <= 1:
+						print 'numIdentities <= 1'
+						return
 
+					param_grid = [{
+						'C': [1, 10, 100, 1000],
+						'kernel': ['linear']
+					}, {
+						'C': [1, 10, 100, 1000],
+						'gamma': [0.001, 0.0001],
+						'kernel': ['rbf']
+					}]
+
+					self.svm = GridSearchCV(SVC(C=1, probability=True), param_grid, cv=5).fit(X, y)
+					print "+ SVM trained and fitted successfully in {:.2f} seconds.".format(time.time() - start)
+		except Exception: 
+			pass
+			
 	def predictFace(self, rep):
 
 		if self.svm is None:

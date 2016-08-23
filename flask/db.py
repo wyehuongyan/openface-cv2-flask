@@ -1,5 +1,6 @@
-# python db.py db migrate
-# python db.py db upgrade
+# python flask/db.py db init
+# python flask/db.py db migrate
+# python flask/db.py db upgrade
 
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand

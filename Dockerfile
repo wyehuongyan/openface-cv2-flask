@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
     python-protobuf\
     wget \
     zip \
+    libmysqlclient-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Bundle app source
@@ -32,6 +33,8 @@ RUN cd $INSTALL_PATH && \
     python2 setup.py install && \
     pip2 install -r demos/web/requirements.txt && \
     pip2 install -r training/requirements.txt
+
+RUN ln -s /root/torch/install/bin/th /usr/local/bin/th
 
 # expose Flask port
 EXPOSE 5000

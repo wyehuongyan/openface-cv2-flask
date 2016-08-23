@@ -2,6 +2,7 @@ import time
 from datetime import datetime
 from imutils.video import WebcamVideoStream
 from imutils.video import FPS
+from trainer import Trainer
 import imutils
 from PIL import Image
 import numpy as np
@@ -26,7 +27,10 @@ class VideoCamera(object):
     """An emulated camera implementation that streams a repeated sequence of
     files 1.jpg, 2.jpg and 3.jpg at a rate of one frame per second."""
 
-    def __init__(self, trainer):
+    # static class object
+    trainer = Trainer()
+
+    def __init__(self):
         #self.cam = WebcamVideoStream(src=0).start() # 0 = lifecam, 1 = iSight
         self.fps = FPS().start()
         self.cam = cv2.VideoCapture(0) 	
@@ -37,8 +41,7 @@ class VideoCamera(object):
         self.cam.set(3, 480) # 480p resolution: 480x360
         self.cam.set(4, 360)
         self.id = None
-        self.trainer = trainer
-        self.images = self.trainer.retrieveFaceImage(None) # images dictionary
+        self.images = VideoCamera.trainer.retrieveFaceImage(None) # images dictionary
 
         print "VideoCamera instantiated"
 
@@ -114,8 +117,8 @@ class VideoCamera(object):
                     #### Recognition ####
                     #####################
                     if self.id is None: 
-                        if self.trainer is not None:
-                            prediction = self.trainer.predictFace(rep)
+                        if VideoCamera.trainer is not None:
+                            prediction = VideoCamera.trainer.predictFace(rep)
 
                             user = prediction["user"]
                             confidence = prediction["confidence"] * 100
@@ -173,6 +176,6 @@ class VideoCamera(object):
         print "[INFO] total images for this session: {}".format(len(self.images))
 
         if self.id: # only update db and train svm if training mode is on
-            self.trainer.trainSVM(self.images)
+            VideoCamera.trainer.trainSVM(self.images)
         else:
             print '[INFO] this is an inference session hence SVM was not trained.'
