@@ -5,7 +5,7 @@ deep neural networks.*
 
 This is a modified version of the original OpenFace library. 
 
-What's modified?
+# What's modified?
 
 + Utilizes Flask as a webserver to serve a simple webview for users.
 + MariaDB as a database to store trained users.
