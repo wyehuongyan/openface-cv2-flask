@@ -1,20 +1,16 @@
-# OpenFace • [ ![Build Status] [travis-image] ] [travis] [ ![Release] [release-image] ] [releases] [ ![License] [license-image] ] [license] [ ![Gitter] [gitter-image] ] [gitter]
+# OpenFace
 
 *Free and open source face recognition with
 deep neural networks.*
 
+This is a modified version of the original OpenFace library. 
 
-[travis-image]: https://travis-ci.org/cmusatyalab/openface.png?branch=master
-[travis]: http://travis-ci.org/cmusatyalab/openface
+What's modified?
 
-[release-image]: http://img.shields.io/badge/release-0.2.1-blue.svg?style=flat
-[releases]: https://github.com/cmusatyalab/openface/releases
-
-[license-image]: http://img.shields.io/badge/license-Apache--2-blue.svg?style=flat
-[license]: LICENSE
-
-[gitter-image]: https://badges.gitter.im/Join%20Chat.svg
-[gitter]: https://gitter.im/cmusatyalab/openface
++ Utilizes Flask as a webserver to serve a simple webview for users.
++ MariaDB as a database to store trained users.
++ Unfortunately, this project uses hardware camera for webcam. Therefore, it does not run on a remote machine unless the remote machine has a webcam attached. This project was intended for CCTV monitoring.
++ (TODO) Will be updating the project to use browser enabled webcam to stream images to the server for processing.
 
 ---
 
